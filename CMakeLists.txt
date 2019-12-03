@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(libmbus LANGUAGES C)
+project(libmbus
+        LANGUAGES CXX
+                  C)
 
 execute_process(COMMAND git
                         describe
@@ -16,6 +18,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
   message(STATUS "CMAKE_BUILD_TYPE empty setting to Debug")
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
+
+option(LIBMBUS_BUILD_EXAMPLES
+       "build examples"
+       ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -63,14 +69,15 @@ add_library(${PROJECT_NAME}
             ${CMAKE_CURRENT_SOURCE_DIR}/mbus/mbus-tcp.h)
 target_include_directories(${PROJECT_NAME}
                            PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/mbus>
+                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mbus>
                                   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
                            PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/mbus/)
-target_compile_options(
-  ${PROJECT_NAME}
-  PRIVATE $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall>
-          $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>
-          $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wextra>)
+# target_compile_options(
+#   ${PROJECT_NAME}
+#   PRIVATE $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall>
+#           $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-pedantic>
+#           $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wextra>)
 if(CLANG_TIDY_EXE)
   set_target_properties(${PROJECT_NAME}
                         PROPERTIES CXX_CLANG_TIDY

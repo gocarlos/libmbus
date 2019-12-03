@@ -1,21 +1,10 @@
-#!/bin/sh
-#
+#!/bin/bash
 
-if [ -f Makefile ]; then
-    # use existing automake files
-    echo >> /dev/null
-else
-    # regenerate automake files
-    echo "Running autotools..."
-
-    autoheader \
-        && aclocal \
-        && case \
-          $(uname) in Darwin*) glibtoolize --ltdl --copy --force ;; \
-          *) libtoolize --ltdl --copy --force ;; esac \
-        && automake --add-missing --copy \
-        && autoconf \
-        && ./configure
-fi
-
-make
+# normal compilation
+# export CC=gcc-8
+# export CXX=g++-8
+rm -rf _build
+mkdir _build
+cd _build
+cmake ..
+cmake --build . -j
