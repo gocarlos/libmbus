@@ -65,11 +65,12 @@ if __name__ == "__main__":
 
         # success
         print("Script finished successfully!")
-        sys.exit(0)
+        failed = False
     except:
         # fail if error occurred
         print("Script finished with errors!")
-        sys.exit(1)
+        failed = True
     finally:
         # kill socat at the end of the test
         os.system("sudo kill $(pidof socat)")
+        sys.exit(1 if failed else 0)
