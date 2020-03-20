@@ -17,12 +17,4 @@ jobs:
     - name: package
       run: sudo apt install socat
     - name: test
-      run: |
-           sudo socat -d -d -d -d pty,raw,echo=0,link=/dev/pty100 pty,raw,echo=0,link=/dev/pty101
-           ./mbus-serial-request-data -d -b 300 /dev/pty100 1
-#    - name: make
-#      run: make
-#    - name: make check
-#      run: make check
-#    - name: make distcheck
-#      run: make distcheck
+      run: sudo python3 test/slave-test.py
