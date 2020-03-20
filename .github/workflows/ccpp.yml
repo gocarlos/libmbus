@@ -8,17 +8,18 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
     - name: build
       run: ./build.sh
-    - name: socat
+    - name: package
+      run: sudo apt install socat
+    - name: test
       run: |
-           sudo apt install socat
            sudo socat -d -d -d -d pty,raw,echo=0,link=/dev/pty100 pty,raw,echo=0,link=/dev/pty101
+           ./mbus-serial-request-data -d -b 300 /dev/pty100 1
 #    - name: make
 #      run: make
 #    - name: make check
