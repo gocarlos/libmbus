@@ -16,7 +16,9 @@ jobs:
     - name: build
       run: ./build.sh
     - name: socat
-      run: socat -d -d -d -d pty,raw,echo=0,link=/dev/pty100 pty,raw,echo=0,link=/dev/pty101
+      run: |
+           sudo apt install socat
+           sudo socat -d -d -d -d pty,raw,echo=0,link=/dev/pty100 pty,raw,echo=0,link=/dev/pty101
 #    - name: make
 #      run: make
 #    - name: make check
