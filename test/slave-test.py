@@ -38,6 +38,7 @@ class Slave:
             address = int(response[-1][1], 16)
             if address < 3 and address > 0:
                 self.ser.write(self.getDeviceBytes(address))
+                return
 
     def request_data(self):
         Popen("./bin/mbus-serial-request-data -d -b 300 /dev/pty100 1", shell=True)
